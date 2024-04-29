@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Registro</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
+</head>
+<body class="container h-100 mt-5">
+    <div>
+        <h3>Registro</h3>
+
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre:</label>
+                <input id="name" name="name" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label for="surname" class="form-label">Apellido:</label>
+                <input id="surname" name="surname" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario:</label>
+                <input id="username" name="username" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input id="email" name="email" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+                <input type="password" id="password" name="password" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label for="password2" class="form-label">Re-Ingresar Contraseña:</label>
+                <input type="password" id="password2" name="password2" class="form-control" />
+            </div>
+
+            {% for msg in messages%}
+                    <h5 class="mb-3 danger">{{msg}}</h5>
+            {% endfor %}
+
+            <input class="btn btn-primary mb-3 btn-success" type="submit" value = 'Registrarse' />
+        </form>
+    </div>
+</body>
+</html>

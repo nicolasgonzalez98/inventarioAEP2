@@ -1,0 +1,5 @@
+Falta Scrap
+Subir ultimos ingresos
+Deployar
+Paginado en asignaciones
+

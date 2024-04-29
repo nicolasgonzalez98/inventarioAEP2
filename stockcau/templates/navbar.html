@@ -1,0 +1,104 @@
+<!-- <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Inventario CAU</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'create' %}">Agregar a inventario</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'reload' %}">Recargar inventario</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'asignaciones' %}" class="nav-link">Asignaciones</a>
+          </li>
+          
+          {% if request.user.is_staff %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'notifications' %}">
+              {% if cant_notificaciones > 0%}
+              Notificaciones <span class="badge text-bg-secondary">{{cant_notificaciones}}
+              {% else %}
+              Notificaciones
+              {% endif %}
+            </a> 
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Dropdown
+        </a>
+        <ul class="dropdown-menu">
+          <a class="dropdown-item" href="/logout">Cerrar sesión</a>
+        </ul>
+        
+      </li>
+    </div>
+  </nav> -->
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Inventario CAU</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create' %}">Agregar a inventario</a>
+                </li>
+                
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="{% url 'reload' %}">Recargar inventario</a>
+                </li> -->
+                
+                <li class="nav-item">
+                    <a href="{% url 'asignaciones' %}" class="nav-link">Asignaciones</a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'informes' %}" class="nav-link">Informes</a>
+              </li>
+                <!-- <li class="nav-item">
+                    <a href="" class="nav-link">Estadisticas</a>
+                </li> -->
+                {% if request.user.is_staff %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'notifications' %}">
+                        {% if cant_notificaciones > 0 %}
+                        Notificaciones <span class="badge text-bg-secondary">{{ cant_notificaciones }}
+                            {% else %}
+                            Notificaciones
+                        {% endif %}
+                    </a>
+                </li>
+                {% endif %}
+                {% if request.user.is_staff %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'admin_users' %}">
+                        Administrar tecnicos
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item"><a href="{% url 'cambio_contraseña' %}" class="nav-link">Cambiar contraseña</a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout">Cerrar sesión</a></li>
+                <!-- Dropdown dentro de la lista -->
+                <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+                    </ul>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</nav>
+

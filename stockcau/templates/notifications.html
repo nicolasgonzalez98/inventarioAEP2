@@ -1,0 +1,84 @@
+{% load static%}
+{% block content %}
+<div class="container p-3">
+    <h3>Tienes {{cant_notificaciones}} notificaciones</h3>
+    <div class="list-group">
+    {% for n in notificaciones%}
+        <div class="mb-3 
+        {% if n.tipo == 'DELETE' %}
+        text-bg-danger
+        card
+        {% elif n.tipo == 'EDIT'%}
+        text-bg-danger
+        card
+        {% elif n.tipo == 'CREATE' %}
+        text-bg-danger
+        card
+        {% endif %}"
+        style="max-width: 90%;"
+        >
+        
+            <div class="card-header">
+                {% if n.tipo == 'DELETE' %}
+                    <h5 class="mb-1">{{n.usuario.username}} solicitó eliminar un articulo del inventario</h5>
+                {% elif n.tipo == 'EDIT'%}
+                    <h5 class="mb-1">{{n.usuario.username}} solicitó modificar un articulo del inventario</h5>
+                {% elif n.tipo == 'CREATE' %}
+                    <h5 class="mb-1">{{n.usuario.username}} solicitó agregar un articulo al inventario.</h5>
+                {% endif %}
+                
+            <!-- <small>3 days ago</small> -->
+            </div >
+            <div class="card-body">
+                {% if n.tipo == 'DELETE' %}
+                <p class="mb-1">Se solicita eliminar: </p>
+                <p>Tipo: <b>{{n.hardware.tipo}}</b></p>
+                <p>Marca: <b>{{n.hardware.marca}}</b></p>
+                <p>Modelo: <b>{{n.hardware.modelo}}</b></p>
+                <p>Nro. de serie: <b>{{n.hardware.nro_de_serie}}</b></p>
+                {% elif n.tipo == 'EDIT'%}
+                <p class="mb-1">Se solicita modificar el siguiente articulo: </p>
+                <p>Tipo: <b>{{n.hardware.tipo}}</b></p>
+                <p>Marca: <b>{{n.hardware.marca}}</b></p>
+                <p>Modelo: <b>{{n.hardware.modelo}}</b></p>
+
+                {% if n.nro_de_serie %}
+                <p><b>Cambiar nro. de serie</b>: <b>{{n.hardware.nro_de_serie}}</b> → <b>{{n.nro_de_serie}}</b></p>
+                {% endif %}
+                
+                {% if n.estado %}
+                <p><b>Cambiar estado</b>: <b>{{n.hardware.estado}}</b> → <b>{{n.estado}}</b></p>
+                {% endif %}
+                {% elif n.tipo == 'CREATE' %}
+                <p class="mb-1">Se solicita crear: </p>
+                <p>Tipo: <b>{{n.hardware.tipo}}</b></p>
+                <p>Marca: <b>{{n.hardware.marca}}</b></p>
+                <p>Modelo: <b>{{n.hardware.modelo}}</b></p>
+                <p>Nro. de serie: <b>{{n.hardware.nro_de_serie}}</b></p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a as="button" class="btn btn-danger" href="action?id={{n.id}}&status=cancel">Denegar</a>
+                <a as="button" class="btn btn-success" href="action?id={{n.id}}&status=accept">Aprobar</a>
+            </div>
+            
+        </div>
+    
+    {% endfor %}
+    {% if status == True %}
+            <script>
+                Swal.fire(
+                '{{title}}',
+                '{{msg}}',
+                'info'
+                )
+                .then(() => {
+                    let url_actual = new URL(window.location.href)
+                    window.location.href = url_actual.origin + url_actual.pathname
+                    
+                })
+            </script>
+    {% endif%}
+    </div>
+</div>
+{% endblock %}

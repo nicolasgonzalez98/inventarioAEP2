@@ -1,0 +1,74 @@
+{% load static %}
+<div class="container p-3">
+        
+        <!-- Code for Filter form start-->
+        <div class="input-group mb-3">
+            
+            <form method="get">
+                <div class="form-row" >
+                    {% for field in filter.form %}
+                    <div class="form-group col-md-6" id="form-field-{{ forloop.counter0 }}">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-dark mb-3 mt-2">Buscar</button>
+                <button class="button btn-danger mb-3 mt-2" href="{% url 'test' %}">x Limpiar filtro</button>
+            </form>
+        </div>
+        <!-- Code for Filter form end-->
+    </div>
+
+    <div class="container p-3">
+        <!-- Product List code start -->
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Modelo</th>
+                <th scope="col">Nro. de serie</th>
+                <th scope="col">Ubicacion</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for hardware in pagina.object_list %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ hardware.tipo }}</td>
+                    <td>{{ hardware.marca }}</td>
+                    <td>{{ hardware.modelo }}</td>
+                    <td>{{ hardware.nro_de_serie }}</td>
+                    <td>{{ hardware.ubicacion }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+        <!-- Product List code end -->
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if pagina.has_previous %}
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                {% endif %}
+              <li class="page-item"><a class="page-link" id="link-page" href="1">1</a></li>
+              <li class="page-item"><a class="page-link" id="link-page" href="2">2</a></li>
+              <li class="page-item"><a class="page-link" id="link-page" href="3">3</a></li>
+                {% if pagina.has_next %}
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                {% endif %}
+              
+            </ul>
+          </nav>
+    </div>
+</div>
+
+<script>
+
+    
+    
+</script>
+

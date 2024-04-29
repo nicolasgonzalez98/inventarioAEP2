@@ -1,0 +1,224 @@
+{% load static%}
+{% block content %}
+<div class="container p-3">
+ <!-- Code for Filter form start-->
+    <div class="input-group mb-3">
+                
+        <form method="get">
+            <div class="form-row" >
+                {% for field in filter.form %}
+                <div class="form-group col-md-6" id="form-field-{{ forloop.counter0 }}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn btn-dark mb-3 mt-2">Buscar</button>
+            
+            <a as="button" class="btn btn-danger mb-3 mt-2" href="{% url 'index' %}">&times;Limpiar filtro</a>
+        </form>
+        
+    </div>
+    <!-- Code for Filter form end-->
+    </div>
+
+    <div class="container p-3">
+    <!-- Product List code start -->
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            
+            <th scope="col">Tipo</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Modelo</th>
+            <th scope="col">Nro. de serie</th>
+            <th scope="col">Ubicacion</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Nota</th>
+            <th scope="col">Observaciones</th>
+            <th scope="col">Asignar</th>
+            <th scope="col">Editar</th>
+            <th scope="col">Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for hardware in pagina.object_list %}
+            <tr>
+                
+                <td>{{ hardware.tipo }}</td>
+                <td>{{ hardware.marca }}</td>
+                <td>{{ hardware.modelo }}</td>
+                <td>{{ hardware.nro_de_serie }}</td>
+                <td>{{ hardware.ubicacion }}</td>
+                <td>{{hardware.estado}}</td>
+                <td>{{hardware.nota}}</td>
+                <td>{{hardware.observaciones}}</td>
+                <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalAsignacion{{hardware.id}}" id="botonAsignacion">Asignar</button></td>
+                <td><a class="btn btn-dark" href="edit/{{hardware.id}}">Editar</a></td>
+                <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-{{hardware.id}}">Eliminar</button></td>
+            </tr>
+
+            <!-- Modal delete -->
+            <div class="modal fade" id="delete-{{hardware.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminar articulo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                    {% if user.is_staff %}
+                        ¿Estas seguro de eliminar {{hardware.tipo}} {{hardware.marca}} - {{hardware.nro_de_serie}} de tu inventario?
+                    {% else %}
+                        ¿Estas seguro de eliminar {{hardware.tipo}} {{hardware.marca}} - {{hardware.nro_de_serie}} de tu inventario?<br><br>
+                        <b>Se le enviara una solicitud al administrador para aprobar este cambio.</b>
+                    {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <a href="delete/{{hardware.id}}" type="button" class="btn btn-danger">Eliminar</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <!--Modal Asignacion-->
+            <div id="modalAsignacion{{hardware.id}}" aria-labelledby="modalAsignacion{{hardware.id}}" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Asignacion de Hardware</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form method="POST" action="asignar?id={{hardware.id}}">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="person" class="form-label">Asignar a</label>
+                                <input type="text" id="person" name="person" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="nro_ticket" class="form-label">Nro. de Ticket</label>
+                                <input type="text" id="nro_ticket" name="nro_ticket" class="form-control">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" value="Guardar cambios"></input>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </div>
+                  </div>
+                </form>
+                </div>
+            </div>
+            {% endfor %}
+            
+            
+        </tbody>
+    </table> 
+<!-- Product List code end -->
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if pagina.has_previous %}
+            <li class="page-item"><a class="page-link" id="link-page" href="page={{ pagina.previous_page_number }}">Anterior</a></li>
+            {% endif %}
+            {% for i in cant_pags %}
+            
+                <li class="page-item 
+                    {% if num_page == i %}
+                    active
+                    {% endif %}
+                "><a class="page-link" id="link-page" href="page={{i}}">
+                    {{i}}
+                </a></li>
+              
+            {% endfor %}
+            
+            {% if pagina.has_next %}
+            <li class="page-item"><a class="page-link" id="link-page" href="page={{ pagina.next_page_number }}">Siguiente</a></li>
+            {% endif %}
+        
+        </ul>
+    </nav>
+</div>
+{% endblock %}
+<!--Advertencias-->
+{% if asignacion == True %}
+<script>
+        Swal.fire(
+    'Articulo asignado',
+    'Se asigno el articulo correctamente.',
+    'success'
+    )
+    .then(() => {
+        let url_actual = new URL(window.location.href)
+
+        window.location.href = url_actual.origin
+    })
+
+    
+
+
+</script>
+{% elif editar == True %}
+<script>
+    Swal.fire(
+    'Articulo editado',
+    'Se edito el articulo correctamente.',
+    'success'
+    )
+    .then(() => {
+        let url_actual = new URL(window.location.href)
+
+        window.location.href = url_actual.origin
+    })
+</script>
+{% elif agregar == True %}
+<script>
+    Swal.fire(
+    'Articulo agregado',
+    'Se agrego correctamente al inventario.',
+    'success'
+    )
+    .then(() => {
+        let url_actual = new URL(window.location.href)
+
+        window.location.href = url_actual.origin
+    })
+</script>
+{% endif %}
+
+<!--Final de advertencias-->
+<script>
+    let nueva_url = new URL(window.location.href)
+    let link = document.querySelectorAll('#link-page')
+    
+
+    for(let i = 0; i < link.length; i++){
+        //Agregar switch y buscar include en Py 
+        link[i].addEventListener('click', () => {
+            if(!nueva_url.search.includes('?nro_de_serie')){
+                
+                link[i].href = ('?'+link[i].href.split(nueva_url.origin+'/')[1]).replace('&', '')
+            }else{
+                if(nueva_url.search.includes('&page=')){
+                    
+                    link[i].href = nueva_url.search.split('&page=')[0]+'&'+link[i].href.split(nueva_url.origin+'/')[1]
+                }else{
+                    
+                    link[i].href = nueva_url.search.split('page=')[0] +'&'+link[i].href.split(nueva_url.origin+'/')[1]    
+                }
+            }
+            
+        })
+    }
+
+    
+    
+
+</script>

@@ -1,0 +1,63 @@
+
+{% load static%}
+{% block content %}
+<div class="container p-3">
+    <h4 class="mt-3">Asignaciones</h4>
+
+    <div class="input-group mb-3">
+                
+        <form method="get">
+            <div class="form-row" >
+                {% for field in filter.form %}
+                <div class="form-group col-md-6" id="form-field-{{ forloop.counter0 }}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn btn-dark mb-3 mt-2">Buscar</button>
+            
+            <a as="button" class="btn btn-danger mb-3 mt-2" href="{% url 'asignaciones' %}">&times;Limpiar filtro</a>
+        </form>
+        
+    </div>
+
+    <div class="container p-3 table-responsive">
+        <!-- Product List code start -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Nro. de serie</th>
+                    <th scope="col">Modelo</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Usuario asignado</th>
+                    <th scope="col">Ubicacion</th>
+                    <th scope="col">Nota</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">N° de ticket</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in asignaciones reversed%}
+                    <tr>
+                        <td>{{a.hardware.tipo}}</td>
+                        <td>{{a.hardware.marca}}</td>
+                        <td>{{a.hardware.nro_de_serie}}</td>
+                        <td>{{a.hardware.modelo}}</td>
+                        <td>{{a.hardware.estado}}</td>
+                        <td>{{a.usuario}}</td>
+                        <td>{{a.hardware.ubicacion}}</td>
+                        <td>{{a.nota}}</td>
+                        <td>{{a.fecha_creacion|date:"d/m/Y"}}</td>
+                        <td>{{a.nro_ticket}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
